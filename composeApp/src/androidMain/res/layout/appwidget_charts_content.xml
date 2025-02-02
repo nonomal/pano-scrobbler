@@ -1,0 +1,130 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@android:id/background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="UseAppTint">
+    <!--    <merge> crashes with npe in viewbinding-->
+    <ImageView
+        android:id="@+id/appwidget_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:importantForAccessibility="no"
+        android:src="@drawable/shape_widget_rounded_bg" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/appwidget_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:text="@string/appwidget_loading"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:textStyle="italic" />
+
+        <ListView
+            android:id="@+id/appwidget_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="0dp"
+            tools:listheader="@layout/appwidget_list_header"
+            tools:listitem="@layout/appwidget_charts_item" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="42dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginTop="1dp"
+                android:alpha="0.7"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/appwidget_artists_shadow"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:alpha="?fakeShadowAlpha"
+                    android:background="?android:selectableItemBackground"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/vd_mic"
+                    android:tint="?android:colorBackground" />
+
+                <ImageButton
+                    android:id="@+id/appwidget_albums_shadow"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:alpha="?fakeShadowAlpha"
+                    android:background="?android:selectableItemBackground"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/vd_album"
+                    android:tint="?android:colorBackground" />
+
+                <ImageButton
+                    android:id="@+id/appwidget_tracks_shadow"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:alpha="?fakeShadowAlpha"
+                    android:background="?android:selectableItemBackground"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/vd_note"
+                    android:tint="?android:colorBackground" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/appwidget_artists"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="?android:selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/artists"
+                    android:src="@drawable/vd_mic"
+                    android:tint="@color/widgetPrimary" />
+
+                <ImageButton
+                    android:id="@+id/appwidget_albums"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="?android:selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/albums"
+                    android:src="@drawable/vd_album"
+                    android:tint="@color/widgetPrimary" />
+
+                <ImageButton
+                    android:id="@+id/appwidget_tracks"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="?android:selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/tracks"
+                    android:src="@drawable/vd_note"
+                    android:tint="@color/widgetPrimary" />
+            </LinearLayout>
+        </FrameLayout>
+    </LinearLayout>
+</FrameLayout>

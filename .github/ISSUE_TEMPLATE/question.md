@@ -7,6 +7,6 @@ assignees: ''
 
 ---
 
-- [ ] My question is not listed in the FAQ at https://telegra.ph/Pano-Scrobbler-FAQ-05-30
+- My question is not listed in the FAQ at [faq.md](https://github.com/kawaiiDango/pano-scrobbler/blob/main/faq.md)
 
 

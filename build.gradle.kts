@@ -1,9 +1,12 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-
 plugins {
-    alias(libs.plugins.kotlin.android) apply false
-    alias(libs.plugins.navigation.safeargs) apply false
+    // this is necessary to avoid the plugins to be loaded multiple times
+    // in each subproject's classloader
     alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.android.library) apply false
+    alias(libs.plugins.compose.multiplatform) apply false
+    alias(libs.plugins.compose.compiler) apply false
+    alias(libs.plugins.kotlin.multiplatform) apply false
+
     alias(libs.plugins.google.services) apply false
     alias(libs.plugins.crashlytics) apply false
     alias(libs.plugins.kotlin.serialization) apply false
@@ -12,26 +15,7 @@ plugins {
     alias(libs.plugins.aboutlibraries) apply false
     alias(libs.plugins.github.release) apply false
     alias(libs.plugins.baselineprofile) apply false
-}
-
-tasks.register<Delete>("clean").configure {
-    delete(rootProject.layout.buildDirectory)
-}
-
-// play store and github publishing scripts
-// remove if not needed
-
-tasks.register<GradleBuild>("cleanBuildDraft") {
-    tasks = listOf(
-        "clean",
-        "publishReleaseBundle",
-        "assembleRelease",
-    )
-}
-
-tasks.register<GradleBuild>("finalizeDraft") {
-    tasks = listOf(
-        "promoteArtifact",
-        "githubRelease",
-    )
+    alias(libs.plugins.jetbrains.kotlin.jvm) apply false
+    alias(libs.plugins.kotlin.android) apply false
+    alias(libs.plugins.buildkonfig) apply false
 }

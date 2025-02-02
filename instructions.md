@@ -1,6 +1,8 @@
+# Build Instructions
+
 Welcome to my spaghetti
 
-- Create /app/src/main/java/com/arn/scrobble/Tokens.kt
+- Create composeApp/src/commonMain/kotlin/com/arn/scrobble/Tokens.kt
 ```
 package com.arn.scrobble
 object Tokens {
@@ -11,41 +13,47 @@ object Tokens {
     const val ACR_SECRET = ""
     // https://developer.spotify.com/dashboard/
     const val SPOTIFY_REFRESH_TOKEN = "<base64 of spotify client id>:<base64 of spotify client secret>"
-    const val SPOTIFY_ARTIST_INFO_SERVER = "" // deprecated, leave it empty [self hosted server](https://github.com/kawaiidango/spotify-artist-search-server)
-    const val SPOTIFY_ARTIST_INFO_KEY = "" // deprecated, leave it empty
-    const val PRO_PRODUCT_ID = "" // play store product ID for IAP
-    const val SIGNATURE = "" // apk signature
-    const val BASE_64_ENCODED_PUBLIC_KEY = "" // (of the signing key)
+    // returns {"code": 0, "message": "valid"} if the license is valid, this spec is subject to change
+    const val LICENSE_CHECKING_SERVER = "https://"
+    // used to verify the license
+    const val LICENSE_PUBLIC_KEY_BASE64 = ""
+    const val PLAY_BILLING_PUBLIC_KEY_BASE64 = ""
+    const val EMBEDDED_SERVER_KEYSTORE_PASSWORD = "" // password for the embedded https server BKS keystore, used for importing settings over local network
 }
 ```
-- Remove or comment out the lines below `// remove if not needed` in app/build.gradle.kts and /build.gradle.kts
-
-- Create app/version.txt and put a positive integer in it. This will be your app version code.
-The version name will be derived from this.
+- Remove or comment out the lines below `// remove if not needed` in composeApp/build.gradle.kts and /build.gradle.kts
 
 - Create a Firebase project for Crashlytics and add google-services.json.
 See https://firebase.google.com/docs/android/setup
 
+- Create a BKS keystore for the embedded https server used for the import/export feature over local network,
+with the password EMBEDDED_SERVER_KEYSTORE_PASSWORD and alias selfsigned.
+Put it in composeApp/src/commonMain/composeResources/files/embedded_server.bks
+
 - Obtain now playing notification strings and their translations by decompiling the resources of
-the Android System Intelligence and Shazam apks respectively with ApkTool and then running [py-scripts/np-strings-extract.py](py-scripts/np-strings-extract.py) on them.
+the Android System Intelligence apk with ApkTool and then running [py-scripts/np-strings-extract.py](py-scripts/np-strings-extract.py) on them.
 
-Usage: `python ./np-strings-extract.py <decompiled-dir> song_format_string np` for scrobbling Pixel Now Playing and
-
-`python ./np-strings-extract.py <decompiled-dir> auto_shazam_now_playing sz` for scrobbling AutoShazam.
+Usage: `python ./np-strings-extract.py <decompiled-dir> song_format_string np` for scrobbling Pixel Now Playing.
     
 Alternatively, you can use this as a stub in `strings.xml`:
 ```
 <string name="song_format_string">%1$s by %2$s</string>
-<string name="auto_shazam_now_playing">%1$s by %2$s</string>
 ```
+
+- To generate the licenses file, run
+  `composeApp:exportLibraryDefinitions -PaboutLibraries.exportPath=src/commonMain/composeResources/files/ -PaboutLibraries.exportVariant=release`
+
+- To copy some android specific strings to android resources, from common resources, run the gradle task `copyStringsToAndroid`
 
 - If you want to generate the optional baseline profile for the app, which can improve its startup time,
 create a file `/baselineprofile/src/main/java/com/arn/scrobble/baselineprofile/Secrets.kt`:
 ```
 object Secrets {
-    const val loginCreds = "<lastfmUsername>,<lastfmSessionKey>,"
+    const val type = "lastfm"
+    const val username = "<lastfmUsername>"
+    const val sessionKey = "<lastfmSessionKey>"
 }
 ```
 
-lastfmSessionKey can be obtained by logging in to LastFM with this app and intercepting auth.getSession
-or by looking into /data/data/com.arn.scrobble/files/harmony_prefs/main/prefs.data and searching for `authkey`
+sessionKey can be obtained by logging in to LastFM with a debug build of this app
+and tapping on the "Copy last.fm session key" in the settings screen.
